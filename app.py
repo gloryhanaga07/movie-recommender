@@ -19,7 +19,7 @@ from llm import get_recommendation, ALL_MOVIES
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-LOG_FILE = "logs.json"
+LOG_FILE = "/tmp/logs.json"
 
 def append_log(entry: dict):
     logs = []
