@@ -44,6 +44,8 @@ def root():
 
 
 @app.get("/health")
+@app.get("/kaithhealthcheck")
+@app.get("/kaithheathcheck")
 def health():
     key_set = bool(os.environ.get("OLLAMA_API_KEY"))
     return {"status": "ok", "ollama_api_key_set": key_set}
