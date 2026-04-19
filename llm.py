@@ -23,7 +23,7 @@ import pandas as pd
 # Setup
 # ---------------------------------------------------------------------------
 
-MODEL = "gemma4:31b-cloud"
+MODEL = "gemma3:4b-cloud"
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "tmdb_top1000_movies.csv")
 
