@@ -304,7 +304,7 @@
 
   <div class="loader" id="loader">
     <div class="spinner"></div>
-    Finding your perfect match...
+    <div id="loader-text">Finding your perfect match...</div>
   </div>
 
   <div class="result-card" id="result-card">
@@ -349,6 +349,14 @@
     ).join('');
   }
 
+  const loaderMessages = [
+    "Finding your perfect match...",
+    "Consulting our film critic...",
+    "Scanning 1,000 movies...",
+    "Almost there...",
+    "Our AI is thinking hard...",
+  ];
+
   async function getRecommendation() {
     const preferences = document.getElementById('preferences').value.trim();
     if (!preferences) {
@@ -361,6 +369,15 @@
 
     document.getElementById('result-card').classList.remove('visible');
     document.getElementById('loader').classList.add('visible');
+
+    // Cycle through messages while loading
+    let msgIndex = 0;
+    const loaderText = document.getElementById('loader-text');
+    loaderText.textContent = loaderMessages[0];
+    const msgInterval = setInterval(() => {
+      msgIndex = (msgIndex + 1) % loaderMessages.length;
+      loaderText.textContent = loaderMessages[msgIndex];
+    }, 4000);
 
     try {
       const res = await fetch('/recommend', {
@@ -378,6 +395,7 @@
     } catch (err) {
       alert('Something went wrong: ' + err.message);
     } finally {
+      clearInterval(msgInterval);
       document.getElementById('loader').classList.remove('visible');
       btn.disabled = false;
     }
