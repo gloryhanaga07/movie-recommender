@@ -370,9 +370,13 @@
       });
 
       const data = await res.json();
+      if (!res.ok) {
+        alert('Error: ' + (data.error || 'Something went wrong. Please try again.'));
+        return;
+      }
       renderResult(data);
     } catch (err) {
-      alert('Something went wrong. Please try again.');
+      alert('Something went wrong: ' + err.message);
     } finally {
       document.getElementById('loader').classList.remove('visible');
       btn.disabled = false;

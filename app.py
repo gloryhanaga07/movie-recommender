@@ -7,9 +7,10 @@ Usage:
 
 import os
 import json
+import traceback
 from datetime import datetime
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -42,9 +43,20 @@ def root():
         return f.read()
 
 
+@app.get("/health")
+def health():
+    key_set = bool(os.environ.get("OLLAMA_API_KEY"))
+    return {"status": "ok", "ollama_api_key_set": key_set}
+
+
 @app.post("/recommend")
 def recommend(req: RecommendRequest):
-    result = get_recommendation(req.preferences, req.history, req.history_ids)
+    try:
+        result = get_recommendation(req.preferences, req.history, req.history_ids)
+    except KeyError as e:
+        return JSONResponse(status_code=500, content={"error": f"Missing environment variable: {e}. Please set OLLAMA_API_KEY in your deployment settings."})
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e), "detail": traceback.format_exc()})
 
     row = ALL_MOVIES[ALL_MOVIES["tmdb_id"] == result["tmdb_id"]]
     if row.empty:
