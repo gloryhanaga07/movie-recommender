@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Movie Recommender</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f0f13;
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 16px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+
+    .header p {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #888;
+    }
+
+    .form-card {
+      background: #1a1a24;
+      border: 1px solid #2a2a38;
+      border-radius: 16px;
+      padding: 28px;
+      width: 100%;
+      max-width: 560px;
+      margin-bottom: 32px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      background: #0f0f13;
+      border: 1px solid #2a2a38;
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-size: 14px;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: inherit;
+      resize: none;
+    }
+
+    textarea { height: 90px; }
+
+    textarea:focus, input[type="text"]:focus {
+      border-color: #6c63ff;
+    }
+
+    .history-wrap { margin-top: 20px; }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+      min-height: 32px;
+    }
+
+    .tag {
+      background: #2a2a38;
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tag button {
+      background: none;
+      border: none;
+      color: #888;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .history-input-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .history-input-row input { flex: 1; }
+
+    .add-btn {
+      background: #2a2a38;
+      border: none;
+      border-radius: 10px;
+      color: #f0f0f0;
+      font-size: 13px;
+      padding: 0 16px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .add-btn:hover { background: #3a3a50; }
+
+    .submit-btn {
+      margin-top: 24px;
+      width: 100%;
+      background: #6c63ff;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+    }
+
+    .submit-btn:hover { background: #5a52e0; }
+    .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Result */
+    .result-card {
+      width: 100%;
+      max-width: 560px;
+      background: #1a1a24;
+      border: 1px solid #2a2a38;
+      border-radius: 16px;
+      overflow: hidden;
+      display: none;
+      animation: fadeUp 0.35s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-card.visible { display: block; }
+
+    .result-inner {
+      display: flex;
+      gap: 0;
+    }
+
+    .poster {
+      width: 140px;
+      min-width: 140px;
+      background: #0f0f13;
+    }
+
+    .poster img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .poster-placeholder {
+      width: 100%;
+      height: 100%;
+      min-height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: #333;
+    }
+
+    .result-body {
+      padding: 20px;
+      flex: 1;
+    }
+
+    .movie-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    .movie-meta {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .rating {
+      display: inline-block;
+      margin-top: 8px;
+      background: #2a2a38;
+      border-radius: 999px;
+      padding: 2px 10px;
+      font-size: 12px;
+      color: #f4c542;
+      font-weight: 600;
+    }
+
+    .ai-description {
+      margin-top: 16px;
+      padding: 14px;
+      background: #0f0f13;
+      border-left: 3px solid #6c63ff;
+      border-radius: 0 8px 8px 0;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #ccc;
+    }
+
+    .tagline {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #555;
+      font-style: italic;
+    }
+
+    /* Loading */
+    .loader {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      color: #888;
+      font-size: 14px;
+    }
+
+    .loader.visible { display: block; }
+
+    .spinner {
+      width: 28px;
+      height: 28px;
+      border: 3px solid #2a2a38;
+      border-top-color: #6c63ff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 10px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .try-again {
+      display: block;
+      margin: 16px auto 0;
+      background: none;
+      border: 1px solid #2a2a38;
+      border-radius: 8px;
+      color: #888;
+      font-size: 13px;
+      padding: 8px 20px;
+      cursor: pointer;
+    }
+
+    .try-again:hover { border-color: #6c63ff; color: #6c63ff; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Movie Recommender</h1>
+    <p>Tell us what you're in the mood for. We'll find your perfect film.</p>
+  </div>
+
+  <div class="form-card">
+    <label for="preferences">What are you in the mood for?</label>
+    <textarea id="preferences" placeholder="e.g. Something fun to watch with friends, lots of humor and action..."></textarea>
+
+    <div class="history-wrap">
+      <label>Already watched (optional)</label>
+      <div class="history-input-row">
+        <input type="text" id="history-input" placeholder="Add a movie title and press Enter" />
+        <button class="add-btn" onclick="addHistory()">Add</button>
+      </div>
+      <div class="tag-list" id="tag-list"></div>
+    </div>
+
+    <button class="submit-btn" id="submit-btn" onclick="getRecommendation()">
+      Find My Movie
+    </button>
+  </div>
+
+  <div class="loader" id="loader">
+    <div class="spinner"></div>
+    Finding your perfect match...
+  </div>
+
+  <div class="result-card" id="result-card">
+    <div class="result-inner">
+      <div class="poster" id="poster-wrap"></div>
+      <div class="result-body">
+        <div class="movie-title" id="movie-title"></div>
+        <div class="movie-meta" id="movie-meta"></div>
+        <div class="rating" id="movie-rating"></div>
+        <div class="ai-description" id="ai-description"></div>
+        <div class="tagline" id="movie-tagline"></div>
+      </div>
+    </div>
+    <button class="try-again" onclick="tryAgain()">Try another recommendation</button>
+  </div>
+
+<script>
+  const history = [];
+
+  document.getElementById('history-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') addHistory();
+  });
+
+  function addHistory() {
+    const input = document.getElementById('history-input');
+    const val = input.value.trim();
+    if (!val) return;
+    history.push(val);
+    input.value = '';
+    renderTags();
+  }
+
+  function removeHistory(i) {
+    history.splice(i, 1);
+    renderTags();
+  }
+
+  function renderTags() {
+    const list = document.getElementById('tag-list');
+    list.innerHTML = history.map((t, i) =>
+      `<div class="tag">${t}<button onclick="removeHistory(${i})">×</button></div>`
+    ).join('');
+  }
+
+  async function getRecommendation() {
+    const preferences = document.getElementById('preferences').value.trim();
+    if (!preferences) {
+      document.getElementById('preferences').focus();
+      return;
+    }
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+
+    document.getElementById('result-card').classList.remove('visible');
+    document.getElementById('loader').classList.add('visible');
+
+    try {
+      const res = await fetch('/recommend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ preferences, history, history_ids: [] }),
+      });
+
+      const data = await res.json();
+      renderResult(data);
+    } catch (err) {
+      alert('Something went wrong. Please try again.');
+    } finally {
+      document.getElementById('loader').classList.remove('visible');
+      btn.disabled = false;
+    }
+  }
+
+  function renderResult(data) {
+    document.getElementById('movie-title').textContent = data.title || 'Unknown';
+    document.getElementById('movie-meta').textContent =
+      `${data.year || ''} · ${data.genres || ''}`;
+    document.getElementById('movie-rating').textContent =
+      `★ ${data.vote_average ? data.vote_average.toFixed(1) : 'N/A'}`;
+    document.getElementById('ai-description').textContent = data.description || '';
+    document.getElementById('movie-tagline').textContent =
+      data.tagline && data.tagline !== 'nan' ? `"${data.tagline}"` : '';
+
+    const posterWrap = document.getElementById('poster-wrap');
+    if (data.poster_url) {
+      posterWrap.innerHTML = `<img src="${data.poster_url}" alt="${data.title}" />`;
+    } else {
+      posterWrap.innerHTML = `<div class="poster-placeholder">🎬</div>`;
+    }
+
+    document.getElementById('result-card').classList.add('visible');
+    document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function tryAgain() {
+    getRecommendation();
+  }
+</script>
+</body>
+</html>

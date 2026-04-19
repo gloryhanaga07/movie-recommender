@@ -1,0 +1,207 @@
+[
+  {
+    "label": "Warm & hopeful",
+    "preferences": "I want something that makes me cry but also feel hopeful at the end, like a warm hug",
+    "history": [],
+    "history_ids": [],
+    "tmdb_id": 508442,
+    "description": 5,
+    "relevance": 5,
+    "overall": 5,
+    "ambiguity_handling": 5,
+    "reason": "The movie perfectly aligns with the requested emotional arc, and the pitch directly mirrors the user's specific language to create a highly personalized recommendation.",
+    "elapsed": 2.82
+  },
+  {
+    "label": "Dark thriller",
+    "preferences": "A psychological thriller that messes with my mind, dark and unpredictable",
+    "history": [],
+    "history_ids": [],
+    "tmdb_id": 1561955,
+    "description": 5,
+    "relevance": 5,
+    "overall": 5,
+    "ambiguity_handling": 5,
+    "reason": "The movie's premise of a psychiatrist and a serial killer perfectly matches the 'dark' and 'psychological' criteria, and the description mirrors the user's specific language effectively.",
+    "elapsed": 2.05
+  },
+  {
+    "label": "Friday fun",
+    "preferences": "Something fun to watch with friends, lots of humor and action, nothing too serious",
+    "history": [],
+    "history_ids": [],
+    "tmdb_id": 384018,
+    "description": 4,
+    "relevance": 5,
+    "overall": 5,
+    "ambiguity_handling": 5,
+    "reason": "The movie perfectly aligns with the request for high-action, lighthearted humor and group-watchability, and the description explicitly connects these elements to the user's keywords.",
+    "elapsed": 1.99
+  },
+  {
+    "label": "Romantic comedy",
+    "preferences": "I love romantic comedies, something light and sweet that gives me butterflies",
+    "history": [],
+    "history_ids": [],
+    "tmdb_id": 9300904,
+    "description": 5,
+    "relevance": 5,
+    "overall": 5,
+    "ambiguity_handling": 5,
+    "reason": "The movie perfectly aligns with the 'light, sweet, and butterflies' request, and the description directly mirrors the user's language to create a highly compelling pitch.",
+    "elapsed": 2.36
+  },
+  {
+    "label": "Sci-fi epic",
+    "preferences": "A mind-blowing sci-fi movie with big ideas about space, time, or AI",
+    "history": [
+      "Inception"
+    ],
+    "history_ids": [
+      27205
+    ],
+    "tmdb_id": 395992,
+    "description": 5,
+    "relevance": 3,
+    "overall": 3,
+    "ambiguity_handling": 5,
+    "reason": "While the description perfectly mirrors the user's keywords, the movie 'Life' is a creature-feature survival thriller rather than a 'mind-blowing' exploration of big ideas regarding time or AI.",
+    "elapsed": 2.84
+  },
+  {
+    "label": "Family animation",
+    "preferences": "A great animated movie to watch with my younger siblings, fun for all ages",
+    "history": [],
+    "history_ids": [],
+    "tmdb_id": 1084242,
+    "description": 4,
+    "relevance": 1,
+    "overall": 1,
+    "ambiguity_handling": 5,
+    "reason": "The movie recommended (Zootopia 2) has not been released yet, making it an impossible recommendation for someone wanting to watch a movie now.",
+    "elapsed": 2.05
+  },
+  {
+    "label": "True story",
+    "preferences": "A gripping movie based on a true story, something that actually happened",
+    "history": [],
+    "history_ids": [],
+    "tmdb_id": 466420,
+    "description": 5,
+    "relevance": 5,
+    "overall": 5,
+    "ambiguity_handling": 5,
+    "reason": "The recommendation perfectly aligns with the user's request for a gripping true story, and the description mirrors their specific language to create a highly compelling pitch.",
+    "elapsed": 2.2
+  },
+  {
+    "label": "Horror",
+    "preferences": "I want to be genuinely scared, something creepy and deeply unsettling",
+    "history": [],
+    "history_ids": [],
+    "tmdb_id": 662723,
+    "description": 4,
+    "relevance": 3,
+    "overall": 3,
+    "ambiguity_handling": 5,
+    "reason": "The movie fits the requested genres, and the pitch mirrors the user's language perfectly, though its effectiveness in being 'genuinely scary' is subjective and varies by audience.",
+    "elapsed": 2.26
+  },
+  {
+    "label": "Superhero action",
+    "preferences": "I love superheroes and big action sequences with memorable villains",
+    "history": [
+      "Avengers: Infinity War",
+      "The Dark Knight"
+    ],
+    "history_ids": [
+      299536,
+      155
+    ],
+    "tmdb_id": 569094,
+    "description": 5,
+    "relevance": 5,
+    "overall": 5,
+    "ambiguity_handling": 5,
+    "reason": "The movie perfectly aligns with all user preferences, and the description explicitly mirrors the user's keywords while adding relevant cinematic context.",
+    "elapsed": 2.58
+  },
+  {
+    "label": "Feel-good music",
+    "preferences": "A feel-good movie with great music or dancing that lifts my mood",
+    "history": [],
+    "history_ids": [],
+    "tmdb_id": 335797,
+    "description": 5,
+    "relevance": 5,
+    "overall": 5,
+    "ambiguity_handling": 5,
+    "reason": "The movie perfectly aligns with every element of the user's request, and the description directly echoes the user's specific keywords to create a personalized pitch.",
+    "elapsed": 1.84
+  },
+  {
+    "label": "Ambiguous \u2014 very vague",
+    "preferences": "I just want to watch something good tonight",
+    "history": [],
+    "history_ids": [],
+    "tmdb_id": 324857,
+    "description": 5,
+    "relevance": 5,
+    "overall": 5,
+    "ambiguity_handling": 5,
+    "reason": "The recommender expertly handled an extremely vague request by selecting a universally acclaimed masterpiece and tailoring the pitch to the user's specific phrasing.",
+    "elapsed": 2.08
+  },
+  {
+    "label": "Ambiguous \u2014 contradictory",
+    "preferences": "Something fun but also serious, maybe action or drama or comedy, I don't know",
+    "history": [],
+    "history_ids": [],
+    "tmdb_id": 490132,
+    "description": 5,
+    "relevance": 5,
+    "overall": 5,
+    "ambiguity_handling": 5,
+    "reason": "The recommender perfectly synthesized the user's vague request for a 'fun but serious' balance by selecting a high-quality dramedy and explicitly linking the movie's themes to the user's keywords.",
+    "elapsed": 2.46
+  },
+  {
+    "label": "Incomplete \u2014 short adjectives only",
+    "preferences": "good, sexy, lovely",
+    "history": [],
+    "history_ids": [],
+    "tmdb_id": 1034716,
+    "description": 5,
+    "relevance": 5,
+    "overall": 5,
+    "ambiguity_handling": 5,
+    "reason": "The recommendation perfectly maps the user's vague adjectives to a specific genre and plot, mirroring the exact keywords in a compelling, personalized pitch.",
+    "elapsed": 2.39
+  },
+  {
+    "label": "Incomplete \u2014 casual slang, no punctuation",
+    "preferences": "idk something chill maybe",
+    "history": [],
+    "history_ids": [],
+    "tmdb_id": 976573,
+    "description": 5,
+    "relevance": 5,
+    "overall": 4,
+    "ambiguity_handling": 5,
+    "reason": "The recommender successfully translated a vague 'chill' request into a specific, feel-good recommendation with a personalized pitch that justifies the choice.",
+    "elapsed": 2.36
+  },
+  {
+    "label": "Incomplete \u2014 emotional fragments only",
+    "preferences": "sad. tired.",
+    "history": [],
+    "history_ids": [],
+    "tmdb_id": 324857,
+    "description": 5,
+    "relevance": 3,
+    "overall": 4,
+    "ambiguity_handling": 5,
+    "reason": "The recommender correctly interpreted vague emotional states as a need for a 'pick-me-up' and provided a highly personalized, persuasive justification for a contrasting mood-lifter.",
+    "elapsed": 2.97
+  }
+]
