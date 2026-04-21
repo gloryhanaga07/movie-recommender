@@ -37,6 +37,31 @@ KNOWN_GENRES = [
     "Romance", "Science Fiction", "Thriller", "War", "Western",
 ]
 
+# Mood/synonym expansion — maps common user words to searchable keywords
+MOOD_EXPANSION = {
+    "chill": ["relaxing", "calm", "light", "gentle", "heartwarming", "comedy", "feel-good"],
+    "fun": ["comedy", "adventure", "entertaining", "humor", "lighthearted", "family"],
+    "funny": ["comedy", "humor", "hilarious", "witty", "laughs"],
+    "scary": ["horror", "terror", "suspense", "fear", "frightening", "creepy"],
+    "sad": ["emotional", "tearjerker", "drama", "grief", "moving", "heartbreaking"],
+    "happy": ["uplifting", "feel-good", "heartwarming", "comedy", "joyful"],
+    "romantic": ["romance", "love", "relationship", "couples", "passion"],
+    "dark": ["noir", "gritty", "crime", "thriller", "suspense", "psychological"],
+    "mind-blowing": ["twist", "psychological", "mystery", "sci-fi", "complex"],
+    "action-packed": ["action", "adventure", "explosive", "fight", "chase"],
+    "thought-provoking": ["philosophical", "drama", "dystopia", "political", "social"],
+    "classic": ["timeless", "iconic", "acclaimed", "legendary"],
+    "feel-good": ["uplifting", "heartwarming", "comedy", "inspiring", "wholesome"],
+    "intense": ["thriller", "suspense", "tension", "psychological", "gripping"],
+    "light": ["comedy", "family", "animation", "lighthearted", "fun"],
+    "epic": ["adventure", "fantasy", "war", "historical", "grand"],
+    "cozy": ["heartwarming", "family", "comedy", "gentle", "wholesome"],
+    "inspiring": ["biography", "sport", "drama", "triumph", "motivational"],
+    "weird": ["surreal", "quirky", "absurd", "cult", "unconventional"],
+    "friends": ["friendship", "buddy", "comedy", "group", "together"],
+    "date": ["romance", "comedy", "love", "relationship", "charming"],
+}
+
 # ---------------------------------------------------------------------------
 # Step 1 — Python pre-filter (no LLM call)
 # ---------------------------------------------------------------------------
@@ -47,6 +72,12 @@ def _filter_candidates(preferences: str, excluded: set, n: int = 20) -> pd.DataF
     No LLM call — pure Python/pandas.
     """
     prefs_lower = preferences.lower()
+
+    # Expand preferences with mood synonyms
+    expanded_keywords = set(prefs_lower.split())
+    for mood, synonyms in MOOD_EXPANSION.items():
+        if mood in prefs_lower:
+            expanded_keywords.update(synonyms)
 
     # Detect explicitly mentioned genres so we can boost them
     mentioned_genres = [g for g in KNOWN_GENRES if g.lower() in prefs_lower]
@@ -64,7 +95,7 @@ def _filter_candidates(preferences: str, excluded: set, n: int = 20) -> pd.DataF
             str(row.get("top_cast", "")),
             str(row.get("director", "")),
         ]).lower()
-        keyword_score = sum(word in searchable for word in prefs_lower.split() if len(word) > 3)
+        keyword_score = sum(word in searchable for word in expanded_keywords if len(word) > 3)
         quality_bonus = row.get("vote_average", 0) / 10.0
         # Genre boost: +3 for each explicitly mentioned genre that appears in the movie's genres
         genre_boost = sum(3.0 for g in mentioned_genres if g.lower() in str(row.get("genres", "")).lower())
