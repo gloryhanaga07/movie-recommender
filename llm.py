@@ -72,12 +72,15 @@ def _filter_candidates(preferences: str, excluded: set, n: int = 20) -> pd.DataF
 
     pool["_score"] = pool.apply(score, axis=1)
 
-    # Take top 2*n matches and sample n from them for diversity
-    matched = pool[pool["_score"] > 1].sort_values("_score", ascending=False)
-    top_pool = matched.head(n * 2)
+    # Take top 4*n matches and do weighted sampling so lower-ranked movies
+    # still get a chance but higher-scoring ones are more likely to appear
+    matched = pool[pool["_score"] > 0].sort_values("_score", ascending=False)
+    top_pool = matched.head(n * 4)
 
     if len(top_pool) >= n:
-        return top_pool.sample(n)
+        # Weighted by score so relevance still matters, but more movies get a shot
+        weights = top_pool["_score"] + 0.1  # +0.1 avoids zero-weight
+        return top_pool.sample(n, weights=weights)
 
     # Fallback: fill remaining slots with highest-rated movies
     remaining = pool[~pool.index.isin(matched.index)].nlargest(n - len(top_pool), "vote_average")
