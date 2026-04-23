@@ -95,7 +95,7 @@ Reply with ONLY this JSON (no markdown):
 
 def judge(preferences: str, a_label: str, a_title: str, a_desc: str,
           b_label: str, b_title: str, b_desc: str) -> dict:
-    """Ask Gemini to judge two recommendations head-to-head."""
+    """Ask Claude to judge two recommendations head-to-head."""
     a_key = a_label.replace(" ", "_")
     b_key = b_label.replace(" ", "_")
 
