@@ -4,3 +4,5 @@ pydantic>=2.0.0
 pandas>=2.0.0
 ollama
 python-multipart
+python-dotenv
+google-genai
