@@ -234,6 +234,9 @@ def get_recommendation(preferences: str, history: list[str], history_ids: list[i
     )
 
     content = re.sub(r"```(?:json)?\s*|\s*```", "", response.message.content.strip()).strip()
+    match = re.search(r"\{.*?\}", content, re.DOTALL)
+    if match:
+        content = match.group(0)
     result = json.loads(content)
 
     # Safety: reject if watched movie slipped through
