@@ -6,7 +6,7 @@ Versions compared:
   V2: llm_v2.py — merged (best filtering + best prompting)
   V3: llm_v3.py — experimental (competitive framing + taste mining)
 
-Judge: Google Gemini (gemini-1.5-flash) via GEMINI_API_KEY
+Judge: Ollama (gemma4:31b-cloud) via OLLAMA_API_KEY
 Inputs: ab_test_inputs.csv
 
 Usage:
@@ -15,12 +15,13 @@ Usage:
 
 import json
 import os
+import re
 import random
 import time
 from datetime import datetime
 
+import ollama
 import pandas as pd
-from google import genai
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -29,8 +30,11 @@ load_dotenv()
 # Setup
 # ---------------------------------------------------------------------------
 
-judge_client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
-JUDGE_MODEL = "gemini-2.5-flash"
+JUDGE_MODEL = "gemma4:31b-cloud"
+judge_client = ollama.Client(
+    host="https://ollama.com",
+    headers={"Authorization": f"Bearer {os.environ['OLLAMA_API_KEY']}"},
+)
 
 VERSIONS = {
     "V1 (llm_v1)": "llm_v1",
@@ -106,12 +110,16 @@ def judge(preferences: str, a_label: str, a_title: str, a_desc: str,
     )
 
     try:
-        response = judge_client.models.generate_content(
+        response = judge_client.chat(
             model=JUDGE_MODEL,
-            contents=prompt,
+            messages=[{"role": "user", "content": prompt}],
+            format="json",
         )
-        raw = response.text.strip()
+        raw = response.message.content.strip()
         raw = raw.replace("```json", "").replace("```", "").strip()
+        match = re.search(r"\{.*\}", raw, re.DOTALL)
+        if match:
+            raw = match.group(0)
         return json.loads(raw)
     except Exception as e:
         print(f"    ⚠️  Judge error: {e}")
