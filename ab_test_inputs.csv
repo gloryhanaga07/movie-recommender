@@ -1,0 +1,13 @@
+id,category,preferences,history,history_ids
+1,genre_specific,"I want something that will genuinely scare me — not just jump scares, but the kind of horror that gets under your skin and stays with you for days. Something deeply unsettling with real dread and atmosphere.",,
+2,genre_specific,"I'm in the mood for a romantic comedy — something light and sweet with real chemistry between the leads. I want butterflies and laughs, not anything too heavy or dramatic.",,
+3,genre_specific,"Give me an epic sci-fi film with big ideas — space exploration, artificial intelligence, or time — something that makes me question reality and leaves me thinking about it for weeks.",,
+4,genre_specific,"I want to watch something based on a true story — a real event or real person that's so unbelievable it feels like fiction. I love when reality is more shocking than anything Hollywood could make up.",,
+5,vague_ambiguous,"I don't know, just something really good to watch tonight. I'm open to anything as long as it's actually worth my time and not boring.",,
+6,vague_ambiguous,"Something fun but also maybe a bit serious? I don't know — could be action or drama or comedy. I just want to feel something by the end of it.",,
+7,emotional,"I just got dumped and I want to feel something but I really don't want to cry. Something that hits emotionally but leaves me feeling okay or even good by the end.",,
+8,emotional,"I've had the most exhausting week of my life — work has been crushing me and I just want to decompress. I need something warm and comforting, like a cinematic hug.",,
+9,social_context,"My friends are coming over Friday night and we want something fun we can all enjoy together — lots of laughs, maybe some action, nothing too slow or too serious. We want to have a good time.",,
+10,social_context,"My younger siblings are visiting and I want to find something we can all watch together — something fun and adventurous that works for all ages, not just little kids but not too mature either.",,
+11,watch_history,"I really love the kinds of movies I've been watching lately — intense, cerebral, visually stunning. Recommend me something in that same vein that I haven't seen yet.","Interstellar, The Avengers","157336, 24428"
+12,watch_history,"I'm in the mood for something funny and entertaining, similar to the stuff I usually enjoy. Something that'll make me laugh out loud without being too dumb about it.","Bridesmaids, The Hangover Part II, La La Land","55721, 45243, 313369"
