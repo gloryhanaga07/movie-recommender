@@ -14,7 +14,7 @@ from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from llm import get_recommendation, ALL_MOVIES
+from llm_v1 import get_recommendation, ALL_MOVIES
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")

@@ -1,0 +1,68 @@
+================================================================================
+VERSION CHANGELOG — Movie Recommender (BAMS 521)
+================================================================================
+
+[2026-04-22 22:29:18] FILE RENAMES
+  llm.py             → llm_v1.py
+  llm_merged.py      → llm_v2.py
+  llm_experimental.py → llm_v3.py
+  app.py updated: import changed from `llm` to `llm_v1`
+
+--------------------------------------------------------------------------------
+
+VERSION DESCRIPTIONS
+--------------------------------------------------------------------------------
+
+llm_v1.py  (original submission baseline)
+  Approach   : Two-step flow — Python pre-filter + single LLM call
+  Filtering  : Keyword scoring with mood/synonym expansion (22 moods, 100+
+               synonyms), explicit genre boosting (+3.5 per named genre),
+               weighted random sampling from top 4×N candidates
+  Prompting  : Chain-of-thought, two-part personalized description,
+               mood-aware guidance, banned lazy openers
+               ("NEVER start with You're looking for")
+  Extras     : Quality bonus (vote_average/10), diversity via weighted sampling
+  Added      : Initial implementation throughout development session
+
+llm_v2.py  (merged — best filtering + best prompting)
+  Approach   : Two-step flow — enhanced Python pre-filter + single LLM call
+  Filtering  : All of V1 PLUS:
+               - Genre synonym map (romcom→Romance, sci-fi→Sci-Fi, etc.)
+               - Stopword removal before keyword matching
+               - 7 intent rules (superhero, romcom, family, true story,
+                 horror, feel-good music, mind-blowing sci-fi) with tuned boosts
+               - Python-level emotional complement adjustments
+               - Year filtering (unreleased movies excluded)
+               - Semi-stable sampling: top 8 fixed + random diversity slice
+               - Popularity bonus (vote_count signal)
+  Prompting  : All of V1 PLUS competitive framing ("you are competing against
+               other AI recommenders — your goal is to win") and watch history
+               taste profile mining (genres, directors, quality bar)
+  Fallback   : Validates tmdb_id is in candidate list before returning;
+               handles empty descriptions gracefully
+  Added      : 2026-04-22, merged from two separate implementations
+
+llm_v3.py  (experimental — competitive framing + taste mining on V1 filter)
+  Approach   : Two-step flow — V1 filtering + experimental prompting
+  Filtering  : Same as llm_v1.py
+  Prompting  : Competitive framing + watch history taste profile mining
+               (top genres, directors, quality bar inferred from history_ids)
+  Note       : Intermediate version — V2 supersedes this by combining V3's
+               prompting improvements with stronger filtering
+  Added      : 2026-04-22, created for A/B testing purposes
+
+--------------------------------------------------------------------------------
+
+A/B TEST PLAN
+--------------------------------------------------------------------------------
+  Input file : ab_test_inputs.csv (12 test cases across 5 categories)
+  Categories : genre_specific (4), vague_ambiguous (2), emotional (2),
+               social_context (2), watch_history (2)
+  Method     : Round-robin head-to-head (V1vsV2, V1vsV3, V2vsV3)
+               Each pair judged twice with A/B positions swapped to
+               eliminate positional bias. Scores averaged across both runs.
+  Judge      : LLM-as-a-judge via API (scoring relevance, description
+               quality, and persuasiveness on a 1-5 scale per dimension)
+  Output     : ab_test_results.json
+
+================================================================================
