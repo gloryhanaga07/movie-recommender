@@ -6,7 +6,7 @@ Versions compared:
   V2: llm_v2.py — merged (best filtering + best prompting)
   V3: llm_v3.py — experimental (competitive framing + taste mining)
 
-Judge: Ollama (gemma4:31b-cloud) via OLLAMA_API_KEY
+Judge: Claude (claude-3-5-haiku) via CLAUDE_API_KEY
 Inputs: ab_test_inputs.csv
 
 Usage:
@@ -20,7 +20,7 @@ import random
 import time
 from datetime import datetime
 
-import ollama
+import anthropic
 import pandas as pd
 from dotenv import load_dotenv
 
@@ -30,11 +30,8 @@ load_dotenv()
 # Setup
 # ---------------------------------------------------------------------------
 
-JUDGE_MODEL = "gemma4:31b-cloud"
-judge_client = ollama.Client(
-    host="https://ollama.com",
-    headers={"Authorization": f"Bearer {os.environ['OLLAMA_API_KEY']}"},
-)
+JUDGE_MODEL = "claude-haiku-4-5"
+judge_client = anthropic.Anthropic(api_key=os.environ["CLAUDE_API_KEY"])
 
 VERSIONS = {
     "V1 (llm_v1)": "llm_v1",
@@ -110,12 +107,12 @@ def judge(preferences: str, a_label: str, a_title: str, a_desc: str,
     )
 
     try:
-        response = judge_client.chat(
+        response = judge_client.messages.create(
             model=JUDGE_MODEL,
+            max_tokens=512,
             messages=[{"role": "user", "content": prompt}],
-            format="json",
         )
-        raw = response.message.content.strip()
+        raw = response.content[0].text.strip()
         raw = raw.replace("```json", "").replace("```", "").strip()
         match = re.search(r"\{.*\}", raw, re.DOTALL)
         if match:
