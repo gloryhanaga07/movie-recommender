@@ -218,6 +218,12 @@ def main():
         history_raw = str(row.get("history", "") or "")
         history_ids_raw = str(row.get("history_ids", "") or "")
 
+        # pandas reads empty CSV cells as NaN → str gives "nan", handle it
+        if history_raw.strip().lower() == "nan":
+            history_raw = ""
+        if history_ids_raw.strip().lower() == "nan":
+            history_ids_raw = ""
+
         history = [h.strip() for h in history_raw.split(",") if h.strip()] if history_raw else []
         history_ids = [int(i.strip()) for i in history_ids_raw.split(",") if i.strip()] if history_ids_raw else []
 
